@@ -4,7 +4,7 @@
 
 import getpass
 import sys
-
+import os
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from linkedin import LinkedIn
@@ -16,14 +16,23 @@ def main():
   browser = webdriver.Firefox()
   browser.implicitly_wait(5) #poll for five seconds whenever searching for an element
   board = LinkedIn('user', 'pw')
-  board.keywords = ['FPGA', 'VHDL', 'Embedded', 'C\+\+', 'hardware', 'PCB', 'Electrical', 'oscilloscope', 'SPI'] # styled for regex
+  board.keywords = ['FPGA', 'VHDL', 'Embedded', 'C\+\+', 'hardware', 'PCB', 'Electrical', 'oscilloscope', '(SPI|I2C)', \
+    'LabVIEW', 'sustainability', 'serial', '(digital|computer)', 'micro(controller|processor)'] # styled for regex
   browser.get(board.url)
 
   input('continue when logged in') #TODO: make robust
 
-  board.job_search(browser, 'Firmware Engineer', 'New York, New York', 30)
+  location = 'New York, New York'
+  board.job_search(browser, 'Electrical Engineer', location, 100)
+  board.job_search(browser, 'Embedded Engineer', location, 100)
+  board.job_search(browser, 'Firmware Engineer', location, 100)
+  board.job_search(browser, 'Computer Hardware Engineer', location, 100)
 
-  workbook = Spreadsheet('Search')
+  resultsDir = 'results'
+  if not os.path.exists(resultsDir):
+    os.mkdir(resultsDir)
+  path = os.path.join(os.getcwd(), resultsDir)
+  workbook = Spreadsheet(path, 'Search')
   board.print_jobs_to_sheet(workbook)
   workbook.close_file()
 

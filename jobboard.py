@@ -10,12 +10,11 @@ from openpyxl.styles import Font
 
 class JobBoard:
   """
-  This is intended to be used with a subclass only. All of the variables will be overwritten. This will likely be edited once I make a subclass.
-  I may find that this parent class is only necessary to enforce certain attributes of its subclasses.
+  This is intended to be used with a subclass only.
   Subclass required defitions:
   name
   url
-  jobSearch()
+  job_search()
   """
   def __init__(self, user, pw):
     self.user = user
@@ -37,7 +36,7 @@ class JobBoard:
     print(self.pw)
 
   def job_search(self):
-    raise NotImplementedError('jobSearch() must be implemented by subclass')
+    raise NotImplementedError('job_search() must be implemented by subclass')
 
   def print_jobs_to_sheet(self, workbook):
     self.jobs = sorted(self.jobs, key=JobPost.get_score, reverse=True) # sort job list by score in descending order

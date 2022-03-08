@@ -4,7 +4,7 @@
 
 import getpass
 import sys
-
+import os
 from linkedin import LinkedIn
 from jobpost import JobPost
 from xlsx_util import Spreadsheet
@@ -23,7 +23,11 @@ def main():
   board.jobs[1].keywords = ['FPGA', 'embedded C']
   board.jobs[1].url = 'url.com'
 
-  workbook = Spreadsheet('Test')
+  resultsDir = 'results_test'
+  if not os.path.exists(resultsDir):
+    os.mkdir(resultsDir)
+  path = os.path.join(os.getcwd(), resultsDir)
+  workbook = Spreadsheet(path, 'Test')
   board.print_jobs_to_sheet(workbook)
   workbook.close_file()
 
